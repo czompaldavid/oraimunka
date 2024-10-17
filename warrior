@@ -1,0 +1,61 @@
+class Warrior:
+    def __init__(self,name,health):
+        self.name = name
+        self.health = health
+        self.a_power = random.randint(1,3)
+        self.defend = random.randint(0,2)
+        self.ex_def = random.randint(0,10)
+        self.krit = random.randint(3,8)
+    def attack(self, other_warrior):
+        other_warrior.health -=self.a_power
+        return f"{self.name} Támad. {other_warrior.name} élete: {other_warrior.health}"
+    def is_alive(self):
+        if self.health > 0:
+            return True
+        else:
+            return False
+        
+
+xwarrior = Warrior("Ronaldo", 5)
+ywarrior = Warrior("Messi", 5)
+
+print(xwarrior.attack(ywarrior))
+print(ywarrior.is_alive())
+        
+korok = 1
+kitamad = 0
+while xwarrior.is_alive() and ywarrior.is_alive():
+    print(f"{korok}. kör")
+    if kitamad == 0:
+        if xwarrior.ex_def == 0:
+            ywarrior.a_power = ywarrior.a_power / 4
+        if xwarrior.defend == 0:
+            ywarrior.a_power = ywarrior.a_power / 2
+        if xwarrior.krit == 0:
+            xwarrior.a_power = xwarrior.a_power * 2
+           
+        print(xwarrior.attack(ywarrior))
+        kitamad += 1
+        xwarrior.a_power = random.randint(1,3)
+        xwarrior.defend = random.randint(0,3)
+        xwarrior.ex_def = random.randint(0,10)
+        xwarrior.krit = random.randint(0,10)
+   
+    else:
+        if ywarrior.ex_def == 0:
+            xwarrior.a_power = xwarrior.a_power / 4
+        if ywarrior.defend == 0:
+            xwarrior.a_power = xwarrior.a_power / 2
+        if ywarrior.krit == 0:
+            xwarrior.a_power = xwarrior.a_power * 2
+        print(ywarrior.attack(xwarrior))
+        kitamad -= 1
+        ywarrior.a_power = random.randint(1,3)
+        ywarrior.defend = random.randint(0,3)
+        ywarrior.ex_def = random.randint(0,10)
+        ywarrior.krit = random.randint(0,10)
+
+    korok +=1
+        
+        
+        
