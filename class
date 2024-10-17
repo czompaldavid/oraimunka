@@ -1,0 +1,77 @@
+'''
+Feladat:
+Készíts egy osztályt, amelynek van egy __init__ metódusa (konstruktor),
+amely a kutya nevét és életkorát tárolja.
+Hozz létre egy metódust display_info() néven, amely kiírja a kutya nevét
+és életkorát.
+Példányosítsd az osztályt, és hívd meg a metódust.
+'''
+
+class Dog:
+    def __init__(self, nev, eletkor):
+        self.nev = nev
+        self.eletkor = eletkor
+    def display_info(self):
+        print(self.nev, self.eletkor)
+        
+k = Dog("Benzema", 9)
+
+print(k.display_info())
+
+
+'''
+Hozz létre egy osztályt, amely egy balance változót tárol.
+
+Készíts metódusokat:
+deposit(amount): hozzáadja az összeget az egyenleghez.
+withdraw(amount): levonja az összeget az egyenlegből,
+ha van elég pénz a számlán.
+get_balance(): visszaadja az aktuális egyenleget.
+Példányosítsd az osztályt, és végezz rajta befizetést,
+pénzfelvételt, és kérdezd le az egyenleget.
+'''
+
+class BankAccount:
+    def __init__(self, balance):
+        self.balance = balance
+        
+    def deposit(self,amount):
+        self.balance = self.balance + amount
+        return self.balance
+    
+    def withdraw(self, amount):
+        self.balance = self.balance - amount
+        return self.balance
+    
+    def get_balance(self):
+        return self.balance
+    
+x = BankAccount(17000)
+print(x.deposit(5030))
+print(x.withdraw(18000))
+print(x.get_balance())
+
+'''
+Feladat:
+Az osztály tárolja a diák nevét és egy jegyek listáját.
+Legyen egy metódus add_grade(grade), amely hozzáad egy jegyet a listához.
+Legyen egy metódus get_average(), amely kiszámolja és visszaadja az átlagot.
+Példányosíts egy diákot, adj hozzá jegyeket, és számold ki az átlagát.
+'''
+
+class Student:
+    def __init__(self, nev, jegy):
+        self.nev = nev
+        self.jegy = []
+    def add_grade(self, grade):
+        self.jegy.append(grade)
+        return self.jegy
+    def get_average(self):
+        return sum(self.jegy)/len(self.jegy)
+
+y = Student("Benzema", None)
+
+print(y.add_grade(3))
+print(y.add_grade(5))
+
+print(y.get_average())
