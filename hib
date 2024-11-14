@@ -1,0 +1,57 @@
+import json
+
+# 1. Töltsd be a JSON adatokat:
+with open('rpg_characters.json', 'r') as file:
+    data = json.loads(file.read())
+
+# 2. Hozz létre egy Character osztályt:
+class Character:
+    def __init__(self, name, level, health, attack, defense):
+        self.name = name
+        self.level = level
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+
+    # Take damage metódus: csökkenti a karakter életerejét a sebzés alapján
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+        print(f"{self.name} took {damage} damage and now has {self.health} health left.")
+
+# 3. Készíts harci logikát:
+def fight(character1, character2):
+    print(f"Battle between {character1.name} and {character2.name} starts!")
+    
+    while character1.health > 0 and character2.health > 0:
+        # Character1 támadása
+        damage = max(character1.attack - character2.defense, 0)  # Ha védekezés nagyobb, akkor nem lesz sebzés
+        character2.take_damage(damage)
+
+        if character2.health <= 0:
+            print(f"{character2.name} is defeated! {character1.name} wins!")
+            break
+
+        # Character2 támadása
+        damage = max(character2.attack - character1.defense, 0)
+        character1.take_damage(damage)
+
+        if character1.health <= 0:
+            print(f"{character1.name} is defeated! {character2.name} wins!")
+            break
+
+# 4. Karakterek betöltése a JSON fájlból:
+characters = [Character(**char) for char in data['characters']]
+
+# Szimuláljunk egy harcot az első két karakter között
+print("\nStarting battle between Warrior and Mage:\n")
+fight(characters[0], characters[1])
+
+# Szimuláljunk egy harcot a Mage és az Archer között
+print("\nStarting battle between Mage and Archer:\n")
+fight(characters[1], characters[2])
+
+# Szimuláljunk egy harcot a Warrior és az Archer között
+print("\nStarting battle between Warrior and Archer:\n")
+fight(characters[0], characters[2])
