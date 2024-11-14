@@ -1,0 +1,73 @@
+import json
+
+# A Character osztály
+class Character:
+    def __init__(self, name, level, health, attack, defense):
+        self.name = name
+        self.level = level
+        self.health = health
+        self.attack = attack
+        self.defense = defense
+    
+    def take_damage(self, damage):
+        """Csökkenti a karakter életerejét a kapott sebzés mértékével."""
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+        print(f"{self.name} életereje: {self.health}")
+
+    def is_alive(self):
+        """Visszaadja, hogy a karakter még életben van-e."""
+        return self.health > 0
+
+# JSON fájl beolvasása és karakterek létrehozása
+def load_characters(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        characters = []
+        for char in data['characters']:
+            character = Character(
+                name=char['name'],
+                level=char['level'],
+                health=char['health'],
+                attack=char['attack'],
+                defense=char['defense']
+            )
+            characters.append(character)
+        return characters
+
+# Harc szimuláció
+def fight(attacker, defender):
+    """A két karakter közötti harcot szimulálja."""
+    while attacker.is_alive() and defender.is_alive():
+        # Támadás
+        damage = max(attacker.attack - defender.defense, 0)
+        print(f"{attacker.name} támadja {defender.name}t, sebzés: {damage}")
+        defender.take_damage(damage)
+
+        if defender.is_alive():
+            # Védelkező visszatámad
+            damage = max(defender.attack - attacker.defense, 0)
+            print(f"{defender.name} visszatámad {attacker.name}t, sebzés: {damage}")
+            attacker.take_damage(damage)
+
+    # Kiírás a harc eredményéről
+    if attacker.is_alive():
+        print(f"{attacker.name} nyerte a harcot!")
+    else:
+        print(f"{defender.name} nyerte a harcot!")
+
+# A fő program
+def main():
+    # Karakterek betöltése
+    characters = load_characters('characters.json')
+
+    # Harc szimulálása két karakter között
+    attacker = characters[0]  # Az első karakter támad
+    defender = characters[1]  # A második karakter védekezik
+
+    print(f"Harcolnak: {attacker.name} és {defender.name}\n")
+    fight(attacker, defender)
+
+if __name__ == "__main__":
+    main()
